@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Sign Up | Heart Rate Analytics</title>
+
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body class="auth-page">
+
+    <div class="auth-container">
+
+        <div class="auth-card">
+
+            <div class="auth-header">
+                <img src="logo.png" alt="Heart Rate Analytics">
+                <p>Create an Account</p>
+                <span>Sign up to start monitoring your heart rate</span>
+            </div>
+
+            <form id="signupForm">
+
+                <div class="form-group">
+                    <label for="name">Full Name</label>
+                    <input
+                        type="text"
+                        id="name"
+                        name="name"
+                        placeholder="Enter your full name"
+                        required
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <input
+                        type="email"
+                        id="email"
+                        name="email"
+                        placeholder="Enter your email"
+                        required
+                    >
+                </div>
+
+                <!-- PASSWORD 1 -->
+            <div class="form-group">
+                <label>Password</label>
+                <div class="password-wrapper">
+                <input type="password" id="password" placeholder="Enter your password">
+                <button type="button" class="eye-btn" onclick="togglePassword('password')">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#12131F" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+            </button>
+        </div>
+        </div>
+
+                <!-- PASSWORD 2 - CONFIRM -->
+            <div class="form-group">
+                <label>Confirm Password</label>
+            <div class="password-wrapper">
+                 <input type="password" id="confirmPassword" placeholder="Confirm your password">
+                 <button type="button" class="eye-btn" onclick="togglePassword('confirmPassword')">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#12131F" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+            </button>
+        </div>
+        </div>
+
+                
+                <button type="submit" class="auth-button">
+                    Create Account
+                </button>
+
+                <p id="signupMessage" class="auth-message"></p>
+
+            </form>
+
+            <div class="auth-footer">
+                <p>
+                    Already have an account?
+                    <a href="login.html">Login</a>
+                </p>
+            </div>
+
+        </div>
+
+    </div>
+    <script type="module" src="js/firebase-auth.js"></script>
+    <script src="js/password.js"></script>
+
+
+</body>
+</html>

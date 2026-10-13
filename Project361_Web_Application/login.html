@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Login | Heart Rate Analytics</title>
+
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body class="auth-page">
+
+    <div class="auth-container">
+
+        <div class="auth-card">
+
+            <div class="auth-header">
+                <img src="logo.png" alt="Heart Rate Analytics">
+                <p>Welcome back</p>
+                <span>Sign in to access your account</span>
+            </div>
+
+            <form id="loginForm">
+
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <input
+                        type="email"
+                        id="email"
+                        name="email"
+                        placeholder="Enter your email"
+                        required
+                    >
+                </div>
+                <div class="form-group">
+                <div class="password-wrapper">
+                <input type="password" id="password" 
+                placeholder="Enter your password">
+                <button type="button" class="eye-btn" onclick="togglePassword('password')"
+                aria-label="Show password">
+
+                <svg id="eyeOpen" xmlns="http://www.w3.org/2000/svg" width="20"
+                height="20" viewBox="0 0 24 24" fill="none" stroke="#12131f" 
+                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                <circle cx="12" cy="12" cy="12" r="3"></circle>
+                </svg>
+                <svg id="eyeClosed" style="display:none" 
+                xmlns="https://www.w3.org/2000/svg" width="20" height="20"
+                viewBox="0 0 24 24" fill="none" stroke="12131f" 
+                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 
+                0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.53 9.53a3 3 0 1 0
+                4.24 4.24"></path>
+                <line x1="1" y1="1" x2="23" y2="23"></line>
+                </svg>
+            </button>
+            </div>
+                </div>
+
+                
+            <div class="forgot-password">
+                <a href="#" id="forgotPasswordLink">Forgot password?</a>
+            </div>
+
+                <button type="submit" class="auth-button">
+                    Login
+                </button>
+
+                <p id="loginMessage" class="auth-message"></p>
+
+            </form>
+
+            <div class="auth-footer">
+                <p>
+                    Don't have an account?
+                    <a href="signup.html">Sign up</a>
+                </p>
+            </div>
+
+        </div>
+
+    </div>
+    <script type="module" src="js/firebase-auth.js"></script>
+    <script src="js/password.js"></script>
+
+
+</body>
+</html>

@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>PRJ361 — Athlete Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <header>
+        <h1>Athlete Dashboard</h1>
+        <p class="subtitle">{{ athlete['name'] if athlete else 'Unknown athlete' }}</p>
+    </header>
+
+    <section class="summary-grid">
+        <div class="card">
+            <span class="label">Current BPM</span>
+            <span class="value">{{ summary.current_bpm or "—" }}</span>
+        </div>
+        <div class="card">
+            <span class="label">Zone</span>
+            <span class="value">{{ summary.current_zone or "—" }}</span>
+        </div>
+        <div class="card">
+            <span class="label">Average BPM</span>
+            <span class="value">{{ summary.average_bpm or "—" }}</span>
+        </div>
+        <div class="card">
+            <span class="label">Peak BPM</span>
+            <span class="value">{{ summary.peak_bpm or "—" }}</span>
+        </div>
+    </section>
+
+    <section>
+        <h2>Recent Trend</h2>
+        <canvas id="hrChart" height="80"></canvas>
+    </section>
+
+    <section>
+        <h2>Alerts</h2>
+        {% if alerts %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Time</th>
+                    <th>Severity</th>
+                    <th>Classification</th>
+                    <th>Explanation / Recommendation</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for a in alerts %}
+                <tr>
+                    <td>{{ a.timestamp }}</td>
+                    <td>{{ a.severity }}</td>
+                    <td>{{ a.classification or "—" }}</td>
+                    <td>{{ a.explanation or a.message }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <p class="empty">No alerts recorded.</p>
+        {% endif %}
+    </section>
+
+    <section>
+        <h2>Ask the assistant</h2>
+        <form id="chatForm">
+            <input type="text" id="chatInput" placeholder="e.g. Is this athlete okay to keep training?">
+            <button type="submit">Send</button>
+        </form>
+        <p id="chatReply" class="empty"></p>
+    </section>
+
+    <script>
+        const readings = {{ readings | tojson }};
+        const labels = readings.map(r => r.timestamp.slice(11, 19));
+        const values = readings.map(r => r.bpm);
+
+        // Plain grayscale canvas chart — no external chart library colours.
+        const canvas = document.getElementById('hrChart');
+        const ctx = canvas.getContext('2d');
+        canvas.width = canvas.offsetWidth;
+
+        function drawChart() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            if (values.length < 2) return;
+
+            const max = Math.max(...values);
+            const min = Math.min(...values);
+            const range = (max - min) || 1;
+            const stepX = canvas.width / (values.length - 1);
+
+            ctx.strokeStyle = '#000000';
+            ctx.lineWidth = 1.5;
+            ctx.beginPath();
+            values.forEach((v, i) => {
+                const x = i * stepX;
+                const y = canvas.height - ((v - min) / range) * (canvas.height - 10) - 5;
+                i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+            });
+            ctx.stroke();
+        }
+        drawChart();
+
+        document.getElementById('chatForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const input = document.getElementById('chatInput');
+            const replyEl = document.getElementById('chatReply');
+            replyEl.textContent = 'Thinking...';
+
+            const res = await fetch('/chat', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ athlete_id: {{ athlete['id'] if athlete else 'null' }}, message: input.value })
+            });
+            const data = await res.json();
+            replyEl.textContent = data.reply || data.message || 'No response.';
+        });
+    </script>
+</body>
+</html>
